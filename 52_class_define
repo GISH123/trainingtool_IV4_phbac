@@ -1,0 +1,35 @@
+
+	#model input :
+	"image_tensor:0"
+
+	#model output :
+	{"detection_boxes:0"}, {"detection_classes:0"}, {"detection_scores:0"}, {"num_detections:0"}
+
+
+//--------------------------------
+//C++   inference
+
+	void Detect::save_result(float dScore, int nClass, float box[4], PredictResult* pSuite, PredictResult* pCard)
+{
+	if (nClass >= 1 && nClass <= 13)
+	{
+		pCard->SetValue(box, dScore, nClass);
+		pSuite->SetValue(box, dScore, SUITES_CLUB);
+	}
+	else if (nClass >= 14 && nClass <= 26)
+	{
+		pCard->SetValue(box, dScore, nClass - 13);
+		pSuite->SetValue(box, dScore, SUITES_DIAMOND);
+	}
+	else if (nClass >= 27 && nClass <= 39)
+	{
+		pCard->SetValue(box, dScore, nClass - 26);
+		pSuite->SetValue(box, dScore, SUITES_HAEART);
+	}
+	else if (nClass >= 40 && nClass <= 52)
+	{
+		pCard->SetValue(box, dScore, nClass - 39);
+		pSuite->SetValue(box, dScore, SUITES_SPADE);
+	}
+
+}
